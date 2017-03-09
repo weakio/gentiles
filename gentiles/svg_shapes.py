@@ -210,10 +210,10 @@ class SVGRectangle(SVGShape):
     def __init__(self, width, height, x=0, y=0, shape_id="rect"):
         super(SVGRectangle, self).__init__()
         self.shape_id = shape_id
-        self.width = width
-        self.height = height
-        self.cx = x
-        self.cy = y
+        self.__width = width
+        self.__height = height
+        self.__cx = x
+        self.__cy = y
     # end __init__
 
 
@@ -239,6 +239,40 @@ class SVGRectangle(SVGShape):
 # end SVGRectangle
 
 
+class SVGIsometricSquare(SVGShape):
+    def __init__(self, width, x=0, y=0, shape_id="isometric_square"):
+        super(SVGIsometricSquare, self).__init__()
+        self.shape_id = shape_id
+        self.__width = width
+        self.__height = width
+        self.__cx = x
+        self.__cy = y
+    # end __init__
+
+
+    def generate_svg(self):
+            ident = 2
+            svg  = '{ident}<rect\n'.format(ident=" "*ident)
+            svg += '{ident}{style}\n'.format(ident=" "*(ident+2),
+                                             style=self.generate_svg_style())
+            svg += '{ident}{id}\n'.format(ident=" "*(ident*2),
+                                          id=self.generate_svg_id())
+            svg += '{ident}width="{w}"\n'.format(ident=" "*(ident*2),
+                                         w=self.__width)
+            svg += '{ident}height="{h}"\n'.format(ident=" "*(ident*2),
+                                         h=self.__height)
+            svg += '{ident}x="{x}"\n'.format(ident=" "*(ident*2),
+                                         x=self.__cx)
+            svg += '{ident}y="{y}"\n'.format(ident=" "*(ident*2),
+                                         y=self.__cy)
+            svg += '{ident}transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)"\n'.format(ident=" "*ident)
+            svg += '{ident}/>'.format(ident=" "*ident)
+
+            return svg
+        # end generate_svg
+# end SVGIsometricSquare
+
+
 class SVGHexagon(SVGShape):
     """
     width  = 2*r
@@ -250,13 +284,13 @@ class SVGHexagon(SVGShape):
 
     ########################################
     """
-    def __init__(self, radius, flat_topped=True, x=0, y=0, shape_id="hexagon"):
+    def __init__(self, radius, x=0, y=0, flat_topped=True, shape_id="hexagon"):
         super(SVGHexagon, self).__init__()
         self.shape_id = shape_id
         self.__flat_topped = flat_topped
         self.__radius = radius
-        self.width = radius*2
-        self.height = math.sqrt(3) * radius
+        self.__width = radius*2
+        self.__height = math.sqrt(3) * radius
         self.__cx = x
         self.__cy = y
     # end __init__
@@ -282,8 +316,8 @@ class SVGHexagon(SVGShape):
         svg += '{ident}sodipodi:sides="6"\n'.format(ident=" "*(ident*2))
         svg += '{ident}sodipodi:cx="{x}"\n'.format(ident=" "*(ident*2), x=self.__cx)
         svg += '{ident}sodipodi:cy="{y}"\n'.format(ident=" "*(ident*2), y=self.__cy)
-        svg += '{ident}sodipodi:r1="{r1}"\n'.format(ident=" "*(ident*2), r1=self.width*0.5)
-        svg += '{ident}sodipodi:r2="{r2}"\n'.format(ident=" "*(ident*2), r2=self.height*0.5)
+        svg += '{ident}sodipodi:r1="{r1}"\n'.format(ident=" "*(ident*2), r1=self.__width*0.5)
+        svg += '{ident}sodipodi:r2="{r2}"\n'.format(ident=" "*(ident*2), r2=self.__height*0.5)
         svg += '{ident}sodipodi:arg1="1.0471976"\n'.format(ident=" "*(ident*2))
         svg += '{ident}sodipodi:arg2="1.5707963"\n'.format(ident=" "*(ident*2))
         svg += '{ident}d="m 0,0 0,0 0,0 0,0 0,0 0,0 z"\n'.format(ident=" "*(ident*2))
